@@ -26,3 +26,12 @@ export async function createPost(post) {
   return entry;
 };
 
+export async function addCommentsToPostById(postId, commentId) {
+  const updatedPost = await Post.findByIdAndUpdate(
+    {_id: postId},
+    {$push: {comments: commentId}},
+    {new: true}
+  );
+  return updatedPost;
+};
+

@@ -1,4 +1,5 @@
-import { createPost } from "../model/post.model.js";
+import { addCommentsToPostById, createPost } from "../model/post.model.js";
+import { createNewComment } from "../model/comment.model.js";
 
 export async function postNewPost(req, res) {
     const {content, tags} = req.body;
@@ -15,10 +16,38 @@ export async function postNewPost(req, res) {
     };
 
     const entry = await createPost(newEntry);
+
     res.status(201).send(entry);
 
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
   };
+};
+
+export async function postNewComment(req, res) {
+  const {postId} = req.params;
+  const {content} = req.body;
+
+ try {
+  const newDate = new Date();
+
+  const newComment = {
+    content,
+    date: newDate,
+    post: postId
+  };
+
+  const comment = await createNewComment(newComment);
+
+  const updatedPost = await addCommentsToPostById(postId, comment._id);
+
+
+  res.status(201).send({comment, updatedPost});
+
+ } catch (error) {
+  console.error(error);
+  res.status(500).send(error);
+ };
+
 };

@@ -21,3 +21,8 @@ const Comment = model('comment', commentSchema);
 
 export default Comment;
 
+export async function createNewComment(comment) {
+  const newEntry = new Comment(comment);
+  const entry = await newEntry.save();
+  return entry;
+};
