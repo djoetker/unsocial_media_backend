@@ -1,4 +1,4 @@
-import { addCommentsToPostById, createPost } from "../model/post.model.js";
+import { addCommentsToPostById, createPost, findPostById } from "../model/post.model.js";
 import { createNewComment } from "../model/comment.model.js";
 
 export async function postNewPost(req, res) {
@@ -42,12 +42,22 @@ export async function postNewComment(req, res) {
 
   const updatedPost = await addCommentsToPostById(postId, comment._id);
 
-
   res.status(201).send({comment, updatedPost});
 
  } catch (error) {
   console.error(error);
   res.status(500).send(error);
  };
+};
 
+export async function getPost(req, res) {
+  const {postId} = req.params;
+
+  try {
+    const post = await findPostById(postId);
+    res.status(200).send(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  };
 };

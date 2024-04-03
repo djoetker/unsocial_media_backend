@@ -11,7 +11,7 @@ const postSchema = new Schema({
   },
   comments: [{
     type: Schema.Types.ObjectId,
-    ref: 'comments'
+    ref: 'comment'
   }],
   tags: [String]
 });
@@ -33,5 +33,10 @@ export async function addCommentsToPostById(postId, commentId) {
     {new: true}
   );
   return updatedPost;
+};
+
+export async function findPostById(postId) {
+  const post = await Post.findById(postId).populate("comments");
+  return post;
 };
 
