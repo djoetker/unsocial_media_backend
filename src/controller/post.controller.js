@@ -66,7 +66,6 @@ export async function getRandomPosts(req, res) {
   let previousPostIds = [];
   if (req.query.previousPostIds) {
     previousPostIds = req.query.previousPostIds;
-    console.log("previousposts: ", previousPostIds)
   };
   try {
     const rndPostsAndIds = await findRandomPosts(previousPostIds);
