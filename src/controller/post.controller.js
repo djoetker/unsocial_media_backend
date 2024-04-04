@@ -1,4 +1,4 @@
-import { addCommentsToPostById, createPost, findPostById } from "../model/post.model.js";
+import { addCommentsToPostById, createPost, findPostById, findRandomPosts } from "../model/post.model.js";
 import { createNewComment } from "../model/comment.model.js";
 
 export async function postNewPost(req, res) {
@@ -56,6 +56,20 @@ export async function getPost(req, res) {
   try {
     const post = await findPostById(postId);
     res.status(200).send(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  };
+};
+
+export async function getRandomPosts(req, res) {
+  let previousPostIds = [];
+  if (req.body.previousPostIds) {
+    previousPostIds = req.body.previousPostIds;
+  };
+  try {
+    const rndPostsAndIds = await findRandomPosts(previousPostIds);
+    res.status(200).send(rndPostsAndIds);
   } catch (error) {
     console.error(error);
     res.status(500).send(error);

@@ -40,3 +40,13 @@ export async function findPostById(postId) {
   return post;
 };
 
+
+export async function findRandomPosts(previousPostIds = []) {
+  const posts = await Post.aggregate([
+    {$match: {_id: {$nin: previousPostIds}}},
+    {$sample: {size: 4}}
+  ]);
+  const fetchedPostIds = posts.map(post => post._id);
+  const updatedPostIds = [...previousPostIds, ...fetchedPostIds];
+  return {posts, updatedPostIds};
+};
