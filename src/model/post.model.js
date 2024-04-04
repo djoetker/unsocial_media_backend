@@ -1,4 +1,5 @@
-import {Schema, model} from "mongoose";
+import { ObjectId } from "mongodb";
+import {Schema, model } from "mongoose";
 
 const postSchema = new Schema({
   content: {
@@ -42,8 +43,9 @@ export async function findPostById(postId) {
 
 
 export async function findRandomPosts(previousPostIds = []) {
+  const prevIds = previousPostIds.map((id) => new ObjectId(id));
   const posts = await Post.aggregate([
-    {$match: {_id: {$nin: previousPostIds}}},
+    {$match: {_id: {$nin: prevIds}}},
     {$sample: {size: 4}}
   ]);
   const fetchedPostIds = posts.map(post => post._id);
