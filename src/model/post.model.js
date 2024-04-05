@@ -52,3 +52,29 @@ export async function findRandomPosts(previousPostIds = []) {
   const updatedPostIds = [...previousPostIds, ...fetchedPostIds];
   return {posts, updatedPostIds};
 };
+
+export async function updatePosts(previousPostIds = []) {
+  const prevIds = previousPostIds.map((id) => new ObjectId(id));
+  const response = await Post.aggregate([
+    { 
+      $match: { 
+        _id: { 
+          $in: prevIds 
+        } 
+      } 
+    },
+    {
+      $facet: {
+        order: [
+          { $match: { _id: { $in: prevIds } } },
+          { $addFields: { __order: { $indexOfArray: [prevIds, "$_id"] } } },
+          { $sort: { __order: 1 } }
+        ]
+      }
+    },
+    { $unwind: "$order" },
+    { $replaceRoot: { newRoot: "$order" } }
+  ]);
+  console.log("response backend: ", response);
+  return response;
+};
