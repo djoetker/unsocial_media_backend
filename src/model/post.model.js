@@ -80,7 +80,6 @@ export async function updatePosts(previousPostIds = []) {
 
 export async function searchPosts(previousPostIds = [], searchQuery) {
   try {
-    console.log("searchquery: ", searchQuery);
     const posts = await Post.find({
       $or: [
         { content: { $regex: new RegExp("\\b" + searchQuery + "\\b", "i") } },

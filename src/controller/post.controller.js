@@ -103,8 +103,6 @@ export async function updateVisiblePosts(req, res) {
 export async function searchPostsByQuery(req, res) {
   try {
     const { query, previousPostIds } = req.query;
-    console.log("query: ", query);
-    console.log("previouspostids: ", previousPostIds);
 
     const response = await searchPosts(previousPostIds, query);
     if (!response) {
