@@ -5,7 +5,7 @@ This project is a simple social media platform where users can post and comment 
 
 https://unsocial-media-frontend.onrender.com/
 
-(it might take a moment for the posts to load)
+(it might take a moment for the posts to load, render.com instance will spin down with inactivity, which can delay requests by 50 seconds.)
 
 ### Features
 
