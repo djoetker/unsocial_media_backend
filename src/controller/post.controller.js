@@ -5,7 +5,10 @@ export async function postNewPost(req, res) {
   const { content, tags } = req.body;
 
   try {
-    const tagsArray = tags.split(" ").filter(word => word.startsWith("#"));
+    const tagsArray = tags.split(" ").map(word => {
+      if (!word.startsWith("#")) return "#" + word;
+      return word;
+    });
 
     const newDate = new Date();
 
@@ -67,7 +70,6 @@ export async function getPost(req, res) {
 
 export async function getRandomPosts(req, res) {
   let previousPostIds = [];
-  console.log("getRandomPosts Count");
   if (req.query.previousPostIds) {
     previousPostIds = req.query.previousPostIds;
   };
